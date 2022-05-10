@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Cards from '../../components/Cards';
+import HeaderBar from '../../components/HeaderBar';
 import {
   getRecipesAction, getDietsAction}
 from '../../redux/actions/actions';
@@ -22,12 +23,12 @@ const Home = () => {
 
 
   return (
-    <div>
-      <h1>Home</h1>
-      <div className="recipes">
+    <>
+      <HeaderBar/>
+      {/* <div className="recipes">
         <Cards recipes={recipes} />
-        </div>
-    </div>
+      </div> */}
+    </>
   )
 }
 
