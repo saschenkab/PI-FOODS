@@ -16,6 +16,7 @@ const getRecipes = async () => {
   recipes = recipes?.map((recipe) => {
     return {
       id: recipe.id,
+      image: recipe.image,
       name: recipe.title,
       summary: recipe.summary,
       score: recipe.spoonacularScore,

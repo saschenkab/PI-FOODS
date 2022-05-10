@@ -54,12 +54,10 @@ recipe.get("/", async (req, res) => {
 
       let allRecipes = [].concat(apiRecipes, databaseRecipes);
 
-      if (allRecipes.length)
-        return res.json(allRecipes.length ? allRecipes : "No recipes found");
-      // console.log(apiRecipes);
+      return res.json(allRecipes);
     } catch (error) {
       console.log(error);
-      return res.json({ message: "There is no recipe with that name" });
+      return res.json({ error: "There is no recipe with that name" });
     }
     // } else {
     //   console.log("There is no recipe with that name");
@@ -123,6 +121,7 @@ recipe.get("/recipe/:id", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    return res.json({ error: `There is no recipe with id ${id}` });
   }
 });
 

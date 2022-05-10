@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Cards from '../../components/Cards';
 import {
-  getRecipesAction,}
-from '../redux/actions/actions';
-import './Home.css'
+  getRecipesAction, getDietsAction}
+from '../../redux/actions/actions';
+import './styles.css'
 
 
 const Home = () => {
 
   const dispatch = useDispatch();
   const recipes = useSelector(state => state.recipes);
+  const diets = useSelector(state => state.diets);
 
   useEffect(() => {
     dispatch(getRecipesAction());
+    dispatch(getDietsAction());
   }, [dispatch]);
 
   console.log(recipes);
@@ -22,13 +25,8 @@ const Home = () => {
     <div>
       <h1>Home</h1>
       <div className="recipes">
-        {recipes.map(recipe => (
-          <div key={recipe.id} className="recipe">
-            <h2>{recipe.name}</h2>
-            <p>{recipe.summary}</p>
-            </div>
-            ))}
-            </div>
+        <Cards recipes={recipes} />
+        </div>
     </div>
   )
 }

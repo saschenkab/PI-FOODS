@@ -1,7 +1,8 @@
 import "./App.css";
-import LandingPage from "./landing-page/landing-page";
-import Home from "./home/Home";
+import LandingPage from "./pages/Landing";
+import Home from "./pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import RecipeDetail from "./pages/RecipeDetail";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<LandingPage />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/recipe/:id" element={<RecipeDetail />} />
       </Routes>
     </BrowserRouter>
   );

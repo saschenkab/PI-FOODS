@@ -4,22 +4,22 @@ const axios = require("axios");
 const { recipeDiets } = require("../utils/endpoints");
 const getRecipes = require("../utils/controllers/getRecipes");
 const diets = Router();
+const DIETS_LIST = [
+  "gluten free",
+  "dairy free",
+  "paleolithic",
+  "ketogenic",
+  "lacto ovo vegetarian",
+  "primal",
+  "whole 30",
+  "pescetarian",
+  "fodmap friendly",
+  "vegan",
+];
 
 diets.get("/", async (req, res) => {
   try {
-    const dietsList = [
-      "gluten free",
-      "dairy free",
-      "paleolithic",
-      "ketogenic",
-      "lacto ovo vegetarian",
-      "primal",
-      "whole 30",
-      "pescetarian",
-      "fodmap friendly",
-      "vegan",
-    ];
-    dietsList.forEach((diet) => {
+    DIETS_LIST.forEach((diet) => {
       Diet.findOrCreate({
         where: {
           name: diet,
