@@ -6,11 +6,11 @@ export const Button = styled.div`
   color: ${white};
   border-radius: 40px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 8px 20px;
-  height: 30px;
+  height: 19px;
   cursor: pointer;
 `;

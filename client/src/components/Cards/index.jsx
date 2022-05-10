@@ -1,6 +1,12 @@
 import React from 'react'
+import styled from 'styled-components'
 import Card from '../Card'
-import './styles.css'
+
+const CardsContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+`
 
 const Cards = ({ recipes, span }) => {
   return (
@@ -8,7 +14,7 @@ const Cards = ({ recipes, span }) => {
         {span !== null && span}
 
         {Array.isArray(recipes) && recipes.length > 0 ? (
-            <div className="cards-container">
+            <CardsContainer>
                 {recipes.map(recipe => (
                     <Card 
                         key={recipe.id}
@@ -18,7 +24,7 @@ const Cards = ({ recipes, span }) => {
                         diet={recipe.diet}
                         />
                 ))}
-            </div>
+            </CardsContainer>
         ) : (
             <div className="no-recipes">
                 <h1>No recipes found</h1>
