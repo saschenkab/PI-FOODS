@@ -3,14 +3,18 @@ import {
   GET_DIETS,
   GET_RECIPE_INFO,
   GET_INSTRUCTIONS,
+  SET_LOADING,
+  FILTER_BY_DIET,
 } from "../utils/constants";
 
 const initialState = {
   recipes: [],
   recipe: {},
   diets: [],
-  filters: [],
+  recipesFiltered: [],
   instructions: [],
+  loading: false,
+  selectedDiet: "all",
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -19,6 +23,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         recipes: action.payload,
+        recipesFiltered: action.payload,
       };
 
     case GET_DIETS:
@@ -37,6 +42,24 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         instructions: action.payload,
+      };
+
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: action.payload,
+      };
+
+    case FILTER_BY_DIET:
+      const recipes = [...state.recipes];
+      const recipesFiltered = recipes.filter((recipe) =>
+        recipe.diet.includes(action.payload)
+      );
+
+      return {
+        ...state,
+        selectedDiet: action.payload,
+        recipesFiltered: action.payload === "all" ? recipes : recipesFiltered,
       };
 
     default:

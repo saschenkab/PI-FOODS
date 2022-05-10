@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { getDietsAction } from "../../redux/actions/actions";
+import { getDietsAction, filterRecipes } from "../../redux/actions/actions";
 import { primaryColor, secondaryColor, white } from "../../utils/colors";
 
 const Container = styled.div`
@@ -35,15 +35,14 @@ const DietItem = styled.div`
 const DietsFilter = () => {
   const dispatch = useDispatch();
   const diets = useSelector((state) => state.diets);
-
-  const [selectedDiet, setSelectedDiet] = useState("all");
+  const selectedDiet = useSelector((state) => state.selectedDiet);
 
   useEffect(() => {
     dispatch(getDietsAction());
   }, [dispatch]);
 
   const handleSelectDiet = (diet) => {
-    setSelectedDiet(diet);
+    dispatch(filterRecipes(diet));
   };
 
   return (

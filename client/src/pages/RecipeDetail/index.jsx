@@ -1,58 +1,125 @@
-import React, {useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getRecipeInfoAction } from '../../redux/actions/actions';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { getRecipeInfoAction } from "../../redux/actions/actions";
+import HeaderBar from "../../components/HeaderBar";
+import styled from "styled-components";
+import { primaryColor, secondaryColor, white } from "../../utils/colors";
+
+const Container = styled.div`
+  margin-top: 50px;
+`;
+
+const CardRecipeDetail = styled.div`
+  width: 60%;
+  margin: 0 auto;
+  border-radius: 40px;
+  position: relative;
+
+  img {
+    width: 100%;
+    border-radius: 40px;
+    margin-bottom: 20px;
+  }
+`;
+
+const CardBody = styled.div`
+  background-color: ${white};
+  padding: 20px;
+  border-radius: 40px;
+  border: 5px solid ${primaryColor};
+`;
+
+const CardTitle = styled.div`
+  font-size: 25px;
+  font-weight: 700;
+`;
+
+const CardDiets = styled.div`
+  p {
+    background-color: ${secondaryColor};
+    margin: 3.5px;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 12px;
+    display: inline-block;
+    color: ${white};
+  }
+`;
 
 const RecipeDetail = () => {
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+  const { id } = useParams();
 
-    const dispatch = useDispatch();
-    let navigate = useNavigate();
-    const {id} = useParams();
+  useEffect(() => {
+    dispatch(getRecipeInfoAction(id));
+  }, [dispatch, id]);
 
-    const recipeInfo = useSelector(state => state.recipe);
+  const recipeInfo = useSelector((state) => state.recipe);
 
-    useEffect(() => {
-        dispatch(getRecipeInfoAction(id))
-    }, [dispatch, id]);
+  if (Object.keys(recipeInfo).length === 0) {
+    return (
+      <Container>
+        <HeaderBar />
+        no hay nada
+      </Container>
+    );
+  }
 
-    console.log(recipeInfo);
+  let ingredients = [];
+  ingredients = recipeInfo.instructions[0].steps.map((step) => {
+    return step.ingredients;
+  });
+
+  const flattenIngredients = ingredients?.flat();
+  const filterIngredients = flattenIngredients?.filter(
+    (value, index, array) =>
+      array.findIndex((value2) => value2.id === value.id) === index
+  );
 
   return (
     <div>
-        <button onClick={() => navigate('/home')}>Back</button>
-        {recipeInfo? (
-            <div className="recipeInfo-container">
-                <div className="img-container">
-                    <img className='recipeInfo-img' src={recipeInfo?.image} alt={recipeInfo?.title} />
-                </div>
-                <div className="recipeInfo-body">
-                    <h2 className="recipeInfo-title">{recipeInfo?.title}</h2>
-                    <div className="recipeInfo-diet">
-                        {recipeInfo.diet?.map(diets => (
-                            <span className="diets" key={diets}>{diets}</span>
-                        ))}
-                        </div>
-                        <div className="recipeInfo-score">{recipeInfo?.score}</div>
-                        <div className="recipeInfo-health">{recipeInfo?.healthScore}</div>
-                        <div className="recipeInfo-summary">
-                            <p className='summary' dangerouslySetInnerHTML={{__html: recipeInfo?.summary }} />
-                        </div>
-                    {/* <div className="recipeInfo-instructions">
-                        <div className="recipeInfo-instructions-title">
-                            {recipeInfo.instructions?.map(instruction => (
-                                <span key={instruction}>{instruction.steps.step}</span>
-                            ))} */}
-                            {/* </div> */}
-                            </div>
-                            </div>
+      <HeaderBar />
+      <Container>
+        <CardRecipeDetail>
+          <CardBody>
+            <img src={recipeInfo?.image} alt={recipeInfo?.title} />
+            <CardDiets>
+              {recipeInfo.diet?.map((diets) => (
+                <p key={diets}>{diets}</p>
+              ))}
+            </CardDiets>
+            <CardTitle>{recipeInfo?.title}</CardTitle>
+            <div>Score: {recipeInfo?.score}</div>
+            <div>Health Score: {recipeInfo?.healthScore}</div>
+            <div>
+              <p dangerouslySetInnerHTML={{ __html: recipeInfo?.summary }} />
+            </div>
 
-        ) : (
-            <div className="no-recipes">
-                <h1>No recipes found</h1>
-                </div>
-        )}
+            <h2>Ingredients:</h2>
+            <ul>
+              {filterIngredients?.map((ingredient) => (
+                <li key={ingredient.id}>
+                  {ingredient.name}
+                </li>
+              ))}
+            </ul>
+
+            <h2>Instructions:</h2>
+            <ul>
+              {recipeInfo?.instructions?.length > 0 &&
+                recipeInfo.instructions[0].steps?.map((step) => (
+                  <span key={step.number}>
+                    <li>{step.step}</li>
+                  </span>
+                ))}
+            </ul>
+          </CardBody>
+        </CardRecipeDetail>
+      </Container>
     </div>
-  )
-}
+  );
+};
 
-export default RecipeDetail
+export default RecipeDetail;

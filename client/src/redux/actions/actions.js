@@ -2,6 +2,7 @@ import {
   GET_RECIPES,
   GET_RECIPE_INFO,
   GET_DIETS,
+  SET_LOADING,
   GET_INSTRUCTIONS,
   ORDER_BY_NAME,
   ORDER_BY_SCORE,
@@ -17,11 +18,21 @@ import {
 import axios from "axios";
 
 export const getRecipesAction = () => async (dispatch) => {
+  dispatch({
+    type: SET_LOADING,
+    payload: true,
+  });
+
   const response = await axios.get(getRecipes);
 
   dispatch({
     type: GET_RECIPES,
     payload: response.data,
+  });
+
+  dispatch({
+    type: SET_LOADING,
+    payload: false,
   });
 };
 
@@ -42,6 +53,17 @@ export const getRecipeInfoAction = (payload) => async (dispatch) => {
   dispatch({
     type: GET_RECIPE_INFO,
     payload: response.data,
+  });
+};
+
+export const filterRecipes = (payload) => async (dispatch) => {
+  console.log(
+    "🚀 ~ file: actions.js ~ line 60 ~ filterRecipes ~ payload",
+    payload
+  );
+  dispatch({
+    type: FILTER_BY_DIET,
+    payload,
   });
 };
 

@@ -17,7 +17,7 @@ const Recipes = styled.div`
 
 const Home = () => {
   const dispatch = useDispatch();
-  const recipes = useSelector((state) => state.recipes);
+  const recipesFiltered = useSelector((state) => state.recipesFiltered);
 
   useEffect(() => {
     dispatch(getRecipesAction());
@@ -29,7 +29,7 @@ const Home = () => {
       <Container>
         <DietsFilter />
         <Recipes>
-          <Cards recipes={recipes} />
+          <Cards recipes={recipesFiltered} />
         </Recipes>
       </Container>
     </>
