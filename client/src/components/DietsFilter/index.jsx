@@ -1,36 +1,7 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getDietsAction, filterRecipes } from "../../redux/actions/actions";
-import { primaryColor, secondaryColor, white } from "../../utils/colors";
-
-const Container = styled.div`
-  width: 20%;
-  background-color: ${primaryColor};
-  height: 400px;
-  border-radius: 40px;
-  padding: 20px;
-`;
-
-const DietItem = styled.div`
-  margin: 15px 0;
-  text-transform: capitalize;
-  position: relative;
-  color: ${white};
-  font-weight: ${(props) => (props.active ? 700 : 500)};
-  cursor: pointer;
-
-  &::before {
-    content: "";
-    width: 5px;
-    height: 100%;
-    background-color: ${(props) =>
-      props.active ? secondaryColor : "transparent"};
-    position: absolute;
-    left: -20px;
-    border-radius: 15px;
-  }
-`;
+import { Container, DietItem } from "./styles";
 
 const DietsFilter = () => {
   const dispatch = useDispatch();
