@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
+import {useDispatch } from "react-redux";
 import logo from "../../images/logohenryfood.png";
 import styled from "styled-components";
+import { getRecipeByNameAction } from "../../redux/actions/actions";
 import { Button } from "../../common";
 import { Link } from "react-router-dom";
+import { SearchBar } from "../Searchbar";
 
 const Container = styled.div`
   display: flex;
@@ -11,33 +14,48 @@ const Container = styled.div`
   padding: 10px;
 `;
 
-const SearchInput = styled.input`
-  background: #ffffff;
-  box-shadow: 0px 0px 5px 3px #e3faf7;
-  border-radius: 40px;
-  border: none;
-  padding: 10px 20px;
-  width: 35%;
-  font-family: "Quicksand", sans-serif;
 
-  &::placeholder {
-    font-family: "Quicksand", sans-serif;
-  }
-
-  &:focus {
-    border: none;
-    outline: none;
-  }
-`;
 
 const HeaderBar = () => {
+
+  const dispatch = useDispatch();
+  const [search, setSearch] = useState("");
+
+  
+  const handleChange = (event) => {
+    event.preventDefault();
+    setSearch(event.target.value);
+    console.log(search);
+  }
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    dispatch(getRecipeByNameAction(search));
+    setSearch("")
+  }
+  const handleKeyChange = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      dispatch(getRecipeByNameAction(search));; 
+      setSearch("")
+    }
+  };
+
+  const resetValue = () => {
+    dispatch(getRecipeByNameAction("", dispatch));
+    setSearch("");
+    // recipes;
+  }
+
   return (
     <Container>
       <Link to="/home">
         <img src={logo} alt="" />
       </Link>
-      <SearchInput type="text" placeholder="Search a recipe" />
+      <SearchBar />
+      <Link to='/createRecipe'>
       <Button>+ Add new recipe</Button>
+      </Link>
     </Container>
   );
 };

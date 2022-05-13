@@ -3,10 +3,12 @@ import {
   GET_RECIPE_INFO,
   GET_DIETS,
   SET_LOADING,
-  GET_INSTRUCTIONS,
-  ORDER_BY_NAME,
+  ORDER,
+  ORDER_BY_HEALTH_SCORE,
   ORDER_BY_SCORE,
   FILTER_BY_DIET,
+  GET_RECTIPE_BY_NAME,
+  CREATE_RECIPE,
 } from "../utils/constants";
 import {
   getRecipes,
@@ -63,6 +65,48 @@ export const filterRecipes = (payload) => async (dispatch) => {
   );
   dispatch({
     type: FILTER_BY_DIET,
+    payload,
+  });
+};
+
+export const getRecipeByNameAction = (payload) => async (dispatch) => {
+  const response = await axios.get(`${getRecipeByName}${payload}`);
+
+  dispatch({
+    type: GET_RECTIPE_BY_NAME,
+    payload: response.data,
+  });
+};
+
+export const postRecipeAction = (payload) => async (dispatch) => {
+  const response = await axios.post(
+    `http://localhost:3001/createRecipe/recipe`,
+    payload
+  );
+
+  dispatch({
+    type: CREATE_RECIPE,
+    payload: response.data,
+  });
+};
+
+export const orderAction = (payload) => async (dispatch) => {
+  dispatch({
+    type: ORDER,
+    payload,
+  });
+};
+
+export const orderByScoreAction = (payload) => async (dispatch) => {
+  dispatch({
+    type: ORDER_BY_SCORE,
+    payload,
+  });
+};
+
+export const orderByHealthScoreAction = (payload) => async (dispatch) => {
+  dispatch({
+    type: ORDER_BY_HEALTH_SCORE,
     payload,
   });
 };

@@ -16,6 +16,7 @@ const CardsContainer = styled.div`
 
 const Cards = ({ recipes }) => {
   const loading = useSelector((state) => state.loading);
+  
 
   if (loading) {
     return (

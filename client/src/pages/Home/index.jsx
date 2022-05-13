@@ -6,6 +6,7 @@ import { getRecipesAction } from "../../redux/actions/actions";
 import styled from "styled-components";
 import DietsFilter from "../../components/DietsFilter";
 import Pagination from "../../components/Pagination";
+import Order from "../../components/Order/Order";
 
 const Container = styled.div`
   display: flex;
@@ -16,20 +17,27 @@ const Recipes = styled.div`
   width: 80%;
 `;
 
+const Filters = styled.div`
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+`
+
+
 const Home = () => {
   const dispatch = useDispatch();
   const recipesFiltered = useSelector((state) => state.recipesFiltered);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 9;
-
-  const recipesPaginated = useMemo(() => {
+  
+  const paginate = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
     return recipesFiltered.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, recipesFiltered]);
 
   useEffect(() => {
-    setCurrentPage(1);
+    setCurrentPage(1)
   }, [recipesFiltered]);
 
   useEffect(() => {
@@ -38,11 +46,14 @@ const Home = () => {
 
   return (
     <>
-      <HeaderBar />
+      <HeaderBar/>
+      <Order/>
       <Container>
+      {/* <Filters> */}
         <DietsFilter />
+      {/* </Filters> */}
         <Recipes>
-          <Cards recipes={recipesPaginated} />
+          <Cards recipes={paginate}/>
           <Pagination
             currentPage={currentPage}
             totalCount={recipesFiltered.length}

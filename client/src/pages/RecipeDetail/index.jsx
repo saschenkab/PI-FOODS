@@ -62,21 +62,35 @@ const RecipeDetail = () => {
     return (
       <Container>
         <HeaderBar />
-        no hay nada
+        <h1>Loading...</h1>
       </Container>
     );
   }
 
   let ingredients = [];
-  ingredients = recipeInfo.instructions[0].steps.map((step) => {
+  if(recipeInfo.instructions.length > 0) {
+  ingredients = recipeInfo.instructions[0].steps?.map((step) => {
     return step.ingredients;
   });
+  } else {
+    ingredients = [];
+  }
+
+  console.log(ingredients);
 
   const flattenIngredients = ingredients?.flat();
   const filterIngredients = flattenIngredients?.filter(
     (value, index, array) =>
       array.findIndex((value2) => value2.id === value.id) === index
   );
+
+  if(filterIngredients === undefined && recipeInfo.instructions[0].steps === undefined) {
+    return (
+      <li>No Ingredients</li>
+    )
+  }
+
+
 
   return (
     <div>
@@ -90,31 +104,29 @@ const RecipeDetail = () => {
                 <p key={diets}>{diets}</p>
               ))}
             </CardDiets>
-            <CardTitle>{recipeInfo?.title}</CardTitle>
+            <CardTitle>{recipeInfo?.name}</CardTitle>
             <div>Score: {recipeInfo?.score}</div>
             <div>Health Score: {recipeInfo?.healthScore}</div>
             <div>
               <p dangerouslySetInnerHTML={{ __html: recipeInfo?.summary }} />
             </div>
-
             <h2>Ingredients:</h2>
             <ul>
-              {filterIngredients?.map((ingredient) => (
-                <li key={ingredient.id}>
-                  {ingredient.name}
-                </li>
-              ))}
+              {filterIngredients ? filterIngredients?.map((ingredient) => (
+                <li key={ingredient.id}>{ingredient.name}</li>
+              )) : (<li>No Ingredients</li>)}
             </ul>
 
             <h2>Instructions:</h2>
             <ul>
-              {recipeInfo?.instructions?.length > 0 &&
+              {recipeInfo.instructions.length > 0 ?
                 recipeInfo.instructions[0].steps?.map((step) => (
                   <span key={step.number}>
                     <li>{step.step}</li>
                   </span>
-                ))}
+                )) : (<li>No Instructions</li>)}
             </ul>
+
           </CardBody>
         </CardRecipeDetail>
       </Container>
